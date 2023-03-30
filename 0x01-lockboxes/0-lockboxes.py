@@ -1,34 +1,32 @@
 #!/usr/bin/python3
-
-""" Lockboxes """
+'''LockBoxes Challenge'''
 
 
 def canUnlockAll(boxes):
-    """
-    - boxes is a list of lists
-    - A key with the same number as a box opens that box
-    - You can assume all keys will be positive integers
-    - The first box boxes[0] is unlocked
-    - Return True if all boxes can be opened, else return False
-    """
-    canUnlockAll = False
-    keys = {0: True}
-    n_boxes = len(boxes)
-    while (True):
+    '''determines if all the boxes can be opened or not
+    Returns:
+        True: all boxes can be opened
+        False: not all boxes can be opened
+    '''
+    length = len(boxes)
+    keys = set()
+    opened_boxes = []
+    i = 0
 
-        n_keys = len(keys)
-
-        for i in range(len(boxes)):
-            if boxes[i] and keys.get(i, False):
-                for j in boxes[i]:
-                    if j < n_boxes:
-                        keys[j] = True
-                    boxes[i] = None
-
-        if not (len(keys) > n_keys):
+    while i < length:
+        oldi = i
+        opened_boxes.append(i)
+        keys.update(boxes[i])
+        for key in keys:
+            if key != 0 and key < length and key not in opened_boxes:
+                i = key
+                break
+        if oldi != i:
+            continue
+        else:
             break
 
-    if n_keys == len(boxes):
-        canUnlockAll = True
-
-    return canUnlockAll 
+    for i in range(length):
+        if i not in opened_boxes and i != 0:
+            return False
+    return True
